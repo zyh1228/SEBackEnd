@@ -3,10 +3,15 @@ from rest_framework import serializers
 from account.models import User
 
 
-class UserLoginSerializer(serializers.Serializer):
+class UserCreateOrLoginSerializer(serializers.Serializer):
     code = serializers.CharField()
     nick_name = serializers.CharField(max_length=1024)
     avatar_url = serializers.CharField()
+
+
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
 
 
 class UserEditSerializer(serializers.Serializer):

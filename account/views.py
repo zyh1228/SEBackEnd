@@ -1,9 +1,8 @@
 import requests
 from django.contrib import auth
-from rest_framework.views import APIView
 from utils.api.api import APIView, validate_serializer
 from seBackEnd.settings import APP_ID, APP_SECRET
-from account.serializers import UserLoginSerializer, UserSerializer, UserEditSerializer
+from account.serializers import UserCreateOrLoginSerializer, UserLoginSerializer, UserSerializer, UserEditSerializer
 from account.models import User
 
 
@@ -18,7 +17,7 @@ def get_openid(code):
 
 class UserAPI(APIView):
 
-    @validate_serializer(UserLoginSerializer)
+    @validate_serializer(UserCreateOrLoginSerializer)
     def post(self, request):
         code = request.data.get('code')
         nick_name = request.data.get('nick_name')
@@ -61,6 +60,21 @@ class UserAPI(APIView):
         auth.logout(request)
         user.delete()
         return self.success()
+
+
+class UserLoginAPI(APIView):
+    @validate_serializer(UserLoginSerializer)
+    def post(self, request):
+        """
+        User login api
+        """
+        data = request.data
+        user = auth.authenticate(username=data["username"], password=data["password"])
+        if user:
+            auth.login(request, user)
+            return self.success("Succeeded")
+        else:
+            return self.error("Invalid username or password")
 
 
 class UserLogoutAPI(APIView):

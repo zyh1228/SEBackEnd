@@ -46,14 +46,13 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     openid = models.TextField(unique=True)
-    nick_name = models.TextField()
-    email = models.TextField(null=True)
-    phone = models.TextField(max_length=11, null=True)
+    nick_name = models.CharField(max_length=1024)
+    email = models.CharField(max_length=1024, null=True)
+    phone = models.CharField(max_length=11, null=True)
     avatar_url = models.TextField()
-    gender = models.TextField(max_length=1, default='0')
+    gender = models.CharField(max_length=1, default='0')
 
     create_time = models.DateTimeField(auto_now_add=True, null=True)
-    # admin_type = models.TextField(default=AdminType.REGULAR_USER)
     session_key = models.TextField(default='')
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
