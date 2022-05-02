@@ -20,9 +20,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1sa*-+i8g=bl83860@@zoi^wb#w-))zqkk+v%gcx_za2#t)gji'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -131,4 +128,9 @@ APP_SECRET = get_env('APP_SECRET')
 AUTH_USER_MODEL = 'account.User'
 
 DATA_DIR = path.join(BASE_DIR, 'data')
+
+# SECURITY WARNING: keep the secret key used in production secret!
+with open(path.join(DATA_DIR, "config", "secret.key"), "r") as f:
+    SECRET_KEY = f.read()
+
 OBJ_MODEL_DIR = path.join(DATA_DIR, 'obj_model')
