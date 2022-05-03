@@ -17,30 +17,39 @@ class APIError(Exception):
         super().__init__(err, msg)
 
 
-class ContentType(object):
+class ContentType:
     json_request = "application/json"
     json_response = "application/json;charset=UTF-8"
     url_encoded_request = "application/x-www-form-urlencoded"
     binary_response = "application/octet-stream"
+    form_data_request = "multipart/form-data"
 
 
-class JSONParser(object):
+class JSONParser:
     content_type = ContentType.json_request
 
     @staticmethod
-    def parse(body):
-        return json.loads(body.decode("utf-8"))
+    def parse(request):
+        return json.loads(request.body.decode("utf-8"))
 
 
-class URLEncodedParser(object):
+class URLEncodedParser:
     content_type = ContentType.url_encoded_request
 
     @staticmethod
-    def parse(body):
-        return QueryDict(body)
+    def parse(request):
+        return QueryDict(request.body)
 
 
-class JSONResponse(object):
+class FormDataParser:
+    content_type = ContentType.form_data_request
+
+    @staticmethod
+    def parse(request):
+        return request.POST
+
+
+class JSONResponse:
     content_type = ContentType.json_response
 
     @classmethod
@@ -59,7 +68,7 @@ class APIView(View):
      - self.response 返回一个django HttpResponse, 具体在self.response_class中实现
      - parse请求的类需要定义在request_parser中, 目前只支持json和urlencoded的类型, 用来解析请求的数据
     """
-    request_parsers = (JSONParser, URLEncodedParser)
+    request_parsers = (JSONParser, URLEncodedParser, FormDataParser)
     response_class = JSONResponse
 
     def _get_request_data(self, request):
@@ -75,7 +84,7 @@ class APIView(View):
             else:
                 raise ValueError("unknown content_type '%s'" % content_type)
             if body:
-                return parser.parse(body)
+                return parser.parse(request)
             return {}
         return request.GET
 
@@ -143,6 +152,7 @@ class APIView(View):
         if self.request_parsers:
             try:
                 request.data = self._get_request_data(self.request)
+                request.file = request.FILES
             except ValueError as e:
                 return self.error(err="invalid-request", msg=str(e))
         try:

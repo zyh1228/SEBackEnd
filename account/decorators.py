@@ -1,7 +1,6 @@
 import functools
 
 from utils.api.api import JSONResponse, APIError
-from account.models import User
 from objModel.models import Category, ObjModel
 
 
@@ -48,6 +47,9 @@ def ensure_created_by(obj, user):
 
     # 判断用户category权限
     if isinstance(obj, Category):
+        if obj.created_by != user:
+            raise e
+    elif isinstance(obj, ObjModel):
         if obj.created_by != user:
             raise e
     elif obj.created_by != user:

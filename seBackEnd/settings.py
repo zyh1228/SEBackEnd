@@ -127,10 +127,15 @@ APP_SECRET = get_env('APP_SECRET')
 
 AUTH_USER_MODEL = 'account.User'
 
-DATA_DIR = path.join(BASE_DIR, 'data')
+DATA_BASE_DIR = BASE_DIR
+DATA_DIR = path.join(DATA_BASE_DIR, 'data')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 with open(path.join(DATA_DIR, "config", "secret.key"), "r") as f:
     SECRET_KEY = f.read()
 
-OBJ_MODEL_DIR = path.join(DATA_DIR, 'obj_model')
+MEDIA_ROOT = DATA_DIR
+MEDIA_URL = 'media/'
+
+OBJ_MODEL_FOLDER = 'obj_model'
+OBJ_MODEL_DIR = path.join(DATA_DIR, OBJ_MODEL_FOLDER)
