@@ -109,13 +109,20 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
 
+DATA_BASE_DIR = BASE_DIR
+DATA_DIR = path.join(DATA_BASE_DIR, 'data')
+
+RES_DIR = path.join(DATA_DIR, 'res')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [path.join(RES_DIR, 'obj_cover')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -127,15 +134,15 @@ APP_SECRET = get_env('APP_SECRET')
 
 AUTH_USER_MODEL = 'account.User'
 
-DATA_BASE_DIR = BASE_DIR
-DATA_DIR = path.join(DATA_BASE_DIR, 'data')
-
 # SECURITY WARNING: keep the secret key used in production secret!
 with open(path.join(DATA_DIR, "config", "secret.key"), "r") as f:
     SECRET_KEY = f.read()
 
-MEDIA_ROOT = DATA_DIR
-MEDIA_URL = 'media/'
+MEDIA_ROOT = RES_DIR
+MEDIA_URL = 'res/'
 
 OBJ_MODEL_FOLDER = 'obj_model'
-OBJ_MODEL_DIR = path.join(DATA_DIR, OBJ_MODEL_FOLDER)
+OBJ_MODEL_DIR = path.join(RES_DIR, OBJ_MODEL_FOLDER)
+
+OBJ_COVER_FOLDER = 'obj_cover'
+OBJ_COVER_DIR = path.join(RES_DIR, OBJ_COVER_FOLDER)

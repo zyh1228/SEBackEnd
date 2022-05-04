@@ -3,8 +3,8 @@ from PIL import Image
 from django.db import models
 
 from account.models import User
-from utils.utils import upload_dir
-from seBackEnd.settings import OBJ_MODEL_DIR
+from utils.utils import upload_obj_cover_dir, upload_obj_model_dir
+from seBackEnd.settings import OBJ_MODEL_DIR, OBJ_COVER_DIR
 
 
 class Category(models.Model):
@@ -20,9 +20,9 @@ class Category(models.Model):
 class ObjModel(models.Model):
     name = models.CharField(max_length=1024)
     description = models.TextField(default='')
-    cover = models.ImageField(upload_to=upload_dir, default=path.join('default', 'default.png'))
+    cover = models.ImageField(upload_to=upload_obj_cover_dir, default=path.join('default', 'default.png'))
     file_type = models.CharField(max_length=16)
-    model_file = models.FileField(upload_to=upload_dir, default=path.join('default', 'default.obj'))
+    model_file = models.FileField(upload_to=upload_obj_model_dir, default=path.join('default', 'default.obj'))
     file_dir_id = models.CharField(max_length=32, default='default')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     create_time = models.DateTimeField(auto_now_add=True)
@@ -41,6 +41,9 @@ class ObjModel(models.Model):
 
     def get_file_dir(self):
         return path.join(OBJ_MODEL_DIR, self.file_dir_id)
+
+    def get_cover_dir(self):
+        return path.join(OBJ_COVER_DIR, self.file_dir_id)
 
     class Meta:
         db_table = 'obj_model'

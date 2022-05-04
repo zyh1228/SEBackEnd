@@ -5,7 +5,9 @@ __pycache__/
 *.sqlite3
 data/config/*
 data/config/.gitkeep
-data/obj_model/*
-!data/obj_model/default
+data/res/obj_model/*
+!data/res/obj_model/default
+data/res/obj_cover/*
+!data/res/obj_cover/default
 
 venv/

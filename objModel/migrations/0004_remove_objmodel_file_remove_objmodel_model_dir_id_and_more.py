@@ -27,11 +27,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='objmodel',
             name='model_file',
-            field=models.FileField(default='default\\default.obj', upload_to=utils.utils.upload_dir),
+            field=models.FileField(default='default\\default.obj', upload_to=utils.utils.upload_obj_model_dir),
         ),
         migrations.AlterField(
             model_name='objmodel',
             name='cover',
-            field=models.ImageField(default='default\\default.png', height_field=400, upload_to=utils.utils.upload_dir, width_field=600),
+            field=models.ImageField(default='default\\default.png', height_field=400, upload_to=utils.utils.upload_obj_cover_dir, width_field=600),
         ),
     ]

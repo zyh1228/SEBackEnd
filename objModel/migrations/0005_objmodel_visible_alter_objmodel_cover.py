@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='objmodel',
             name='cover',
-            field=models.ImageField(default='default\\default.png', upload_to=utils.utils.upload_dir),
+            field=models.ImageField(default='default\\default.png', upload_to=utils.utils.upload_obj_cover_dir),
         ),
     ]

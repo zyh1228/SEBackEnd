@@ -267,6 +267,10 @@ class ObjModelAPI(APIView):
         if path.isdir(file_dir):
             shutil.rmtree(file_dir, ignore_errors=True)
 
+        cover_dir = obj_model.get_cover_dir()
+        if path.isdir(cover_dir):
+            shutil.rmtree(cover_dir, ignore_errors=True)
+
         obj_model.delete()
 
         return self.success()
