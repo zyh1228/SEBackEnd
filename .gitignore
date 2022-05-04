@@ -5,6 +5,8 @@ __pycache__/
 *.sqlite3
 data/config/*
 data/config/.gitkeep
+data/log/*
+!data/log/.gitkeep
 data/res/obj_model/*
 !data/res/obj_model/default
 data/res/obj_cover/*

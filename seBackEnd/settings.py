@@ -146,3 +146,41 @@ OBJ_MODEL_DIR = path.join(RES_DIR, OBJ_MODEL_FOLDER)
 
 OBJ_COVER_FOLDER = 'obj_cover'
 OBJ_COVER_DIR = path.join(RES_DIR, OBJ_COVER_FOLDER)
+
+LOG_PATH = path.join(DATA_DIR, "log")
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '{levelname} - {asctime} - {module} - {process:d} - {thread:d} - {message}',
+            'style': '{',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'WARNING',
+            'propagate': True,
+        }
+    },
+}
+
