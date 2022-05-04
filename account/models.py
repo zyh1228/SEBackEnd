@@ -50,7 +50,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(max_length=1024, null=True, verbose_name='邮箱')
     phone = models.CharField(max_length=11, null=True, verbose_name='电话')
     avatar_url = models.TextField(null=True, verbose_name='头像URL')
-    gender = models.CharField(max_length=1, default='0', verbose_name='性别')
+    gender = models.CharField(choices=(('0', '未知'), ('1', '男'), ('2', '女')), max_length=1, default='0', verbose_name='性别')
 
     create_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='创建时间')
     session_key = models.TextField(default='', verbose_name='session值')
