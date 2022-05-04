@@ -45,22 +45,25 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    openid = models.TextField(unique=True)
-    nick_name = models.CharField(max_length=1024)
-    email = models.CharField(max_length=1024, null=True)
-    phone = models.CharField(max_length=11, null=True)
-    avatar_url = models.TextField()
-    gender = models.CharField(max_length=1, default='0')
+    openid = models.TextField(unique=True, verbose_name='用户名(openid)')
+    nick_name = models.CharField(max_length=1024, verbose_name='昵称')
+    email = models.CharField(max_length=1024, null=True, verbose_name='邮箱')
+    phone = models.CharField(max_length=11, null=True, verbose_name='电话')
+    avatar_url = models.TextField(null=True, verbose_name='头像URL')
+    gender = models.CharField(max_length=1, default='0', verbose_name='性别')
 
-    create_time = models.DateTimeField(auto_now_add=True, null=True)
-    session_key = models.TextField(default='')
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    create_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='创建时间')
+    session_key = models.TextField(default='', verbose_name='session值')
+    is_active = models.BooleanField(default=True, verbose_name='是否激活')
+    is_staff = models.BooleanField(default=False, verbose_name='是否员工')
 
     USERNAME_FIELD = "openid"
+    EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = UserManager()
 
     class Meta:
         db_table = "user"
+        verbose_name = '用户'
+        verbose_name_plural = '用户'
