@@ -1,5 +1,7 @@
 import requests
 from django.contrib import auth
+
+from account.decorators import login_required
 from utils.api.api import APIView, validate_serializer
 from seBackEnd.settings import APP_ID, APP_SECRET
 from account.serializers import UserCreateOrLoginSerializer, UserLoginSerializer, UserSerializer, UserEditSerializer
@@ -39,6 +41,7 @@ class UserAPI(APIView):
         else:
             return self.error('authentication failed')
 
+    @login_required
     def get(self, request):
         user = request.user
         return self.success(UserSerializer(user).data)
