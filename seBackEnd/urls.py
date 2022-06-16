@@ -22,5 +22,6 @@ urlpatterns = [
     re_path('^res/(?P<path>.*?)$', serve, kwargs={'document_root': MEDIA_ROOT}),
     path('admin/', admin.site.urls),
     path('api/account/', include('account.urls')),
-    path('api/model/', include('objModel.urls'))
+    path('api/model/', include('objModel.urls')),
+    path('api/history/', include('history.urls')),
 ]

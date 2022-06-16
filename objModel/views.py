@@ -8,6 +8,7 @@ from account.decorators import login_required, admin_required, ensure_created_by
 from objModel.serializers import CreateCategorySerializer, EditCategorySerializer, CategorySerializer
 from objModel.serializers import CreateObjModelForm, EditObjModelForm, ObjModelSerializer
 from objModel.models import Category, ObjModel
+from history.models import History
 
 
 class CategoryAPI(APIView):
@@ -170,10 +171,13 @@ class ObjModelAPI(APIView):
         """
         model_id = request.GET.get('id')
         if model_id:
+            if not request.user.is_authenticated:
+                return self.error("Please login first")
             try:
                 obj_model = ObjModel.objects.get(id=model_id, visible=True)
             except ObjModel.DoesNotExist:
                 return self.error('Model does not exist')
+            History.objects.create(created_by=request.user, obj_model=obj_model)
             return self.success(ObjModelSerializer(obj_model).data)
 
         obj_model = ObjModel.objects.filter(visible=True)
