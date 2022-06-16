@@ -58,6 +58,7 @@ class UserAPI(APIView):
 
         return self.success(UserSerializer(user).data)
 
+    @login_required
     def delete(self, request):
         user = request.user
         auth.logout(request)
@@ -81,6 +82,7 @@ class UserLoginAPI(APIView):
 
 
 class UserLogoutAPI(APIView):
+    @login_required
     def get(self, request):
         auth.logout(request)
         return self.success()
