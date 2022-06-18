@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     avatar_url = models.TextField(null=True, verbose_name='头像URL')
     gender = models.CharField(choices=(('0', '未知'), ('1', '男'), ('2', '女')), max_length=1, default='0', verbose_name='性别')
 
-    create_time = models.DateTimeField(auto_now_add=True, null=True, verbose_name='创建时间')
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
     session_key = models.TextField(default='', verbose_name='session值')
     is_active = models.BooleanField(default=True, verbose_name='是否激活')
     is_staff = models.BooleanField(default=False, verbose_name='是否员工')
