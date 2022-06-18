@@ -8,4 +8,4 @@ class HistoryUserSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = History
-        fields = ['id', 'view_time', 'created_by', 'obj_model']
+        fields = ['id', 'view_time', 'obj_model']

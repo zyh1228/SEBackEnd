@@ -1,6 +1,8 @@
 from django import forms
 from rest_framework import serializers
+
 from objModel.models import Category, ObjModel
+from account.serializers import UserNameSerializer
 
 
 class CreateOrEditCategorySerializer(serializers.Serializer):
@@ -38,7 +40,16 @@ class EditObjModelForm(CreateOrEditObjModelForm):
     id = forms.IntegerField()
 
 
+class ObjModelListSerializer(serializers.ModelSerializer):
+    created_by = UserNameSerializer()
+
+    class Meta:
+        model = ObjModel
+        fields = ['id', 'name', 'cover', 'file_type', 'category', 'last_edit_time', 'created_by']
+
+
 class ObjModelSerializer(serializers.ModelSerializer):
+    created_by = UserNameSerializer()
 
     class Meta:
         model = ObjModel

@@ -6,7 +6,7 @@ from utils.api.api import APIView, validate_serializer, APIError
 from utils.shortcuts import rand_str
 from account.decorators import login_required, admin_required, ensure_created_by
 from objModel.serializers import CreateCategorySerializer, EditCategorySerializer, CategorySerializer
-from objModel.serializers import CreateObjModelForm, EditObjModelForm, ObjModelSerializer
+from objModel.serializers import CreateObjModelForm, EditObjModelForm, ObjModelSerializer, ObjModelListSerializer
 from objModel.models import Category, ObjModel
 from history.models import History
 
@@ -196,7 +196,7 @@ class ObjModelAPI(APIView):
                                          Q(created_by__nick_name__icontains=keywords) |
                                          Q(category__category_name__icontains=keywords))
 
-        return self.success(self.paginate_data(request, obj_model, ObjModelSerializer))
+        return self.success(self.paginate_data(request, obj_model, ObjModelListSerializer))
 
     # @login_required
     # def put(self, request):
