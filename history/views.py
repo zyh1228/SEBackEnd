@@ -19,7 +19,7 @@ class HistoryAPI(APIView):
         if not history_id:
             return self.error('id is needed')
         try:
-            history = History.objects.get(id=history_id, visible=True)
+            history = History.objects.get(id=history_id)
             ensure_created_by(history, user)
         except History.DoesNotExist:
             return self.error('History does not exist')
