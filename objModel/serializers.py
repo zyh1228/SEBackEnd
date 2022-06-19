@@ -42,6 +42,7 @@ class EditObjModelForm(CreateOrEditObjModelForm):
 
 class ObjModelListSerializer(serializers.ModelSerializer):
     created_by = UserNameSerializer()
+    category = CategorySerializer()
 
     class Meta:
         model = ObjModel
@@ -50,6 +51,7 @@ class ObjModelListSerializer(serializers.ModelSerializer):
 
 class ObjModelSerializer(serializers.ModelSerializer):
     created_by = UserNameSerializer()
+    category = CategorySerializer()
 
     class Meta:
         model = ObjModel
