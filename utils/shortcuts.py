@@ -25,29 +25,6 @@ def rand_str(length=32, type="lower_hex"):
         return random.choice("123456789") + get_random_string(length - 1, allowed_chars="0123456789")
 
 
-def build_query_string(kv_data, ignore_none=True):
-    # {"a": 1, "b": "test"} -> "?a=1&b=test"
-    query_string = ""
-    for k, v in kv_data.items():
-        if ignore_none is True and kv_data[k] is None:
-            continue
-        if query_string != "":
-            query_string += "&"
-        else:
-            query_string = "?"
-        query_string += (k + "=" + str(v))
-    return query_string
-
-
-def img2base64(img):
-    with BytesIO() as buf:
-        img.save(buf, "gif")
-        buf_str = buf.getvalue()
-    img_prefix = "data:image/png;base64,"
-    b64_str = img_prefix + b64encode(buf_str).decode("utf-8")
-    return b64_str
-
-
 def datetime2str(value, format="iso-8601"):
     if format.lower() == "iso-8601":
         value = value.isoformat()
@@ -59,11 +36,6 @@ def datetime2str(value, format="iso-8601"):
 
 def timestamp2utcstr(value):
     return datetime.datetime.utcfromtimestamp(value).isoformat()
-
-
-def natural_sort_key(s, _nsre=re.compile(r"(\d+)")):
-    return [int(text) if text.isdigit() else text.lower()
-            for text in re.split(_nsre, s)]
 
 
 def get_env(name, default=""):
