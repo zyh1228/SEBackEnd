@@ -9,6 +9,11 @@ from account.models import User
 
 
 def get_openid(code):
+    """向微信服务器换取openID
+
+    :param code: 微信的code
+    :return: openID, session_key
+    """
     url = 'https://api.weixin.qq.com/sns/jscode2session' + "?appid=" + APP_ID + "&secret=" + APP_SECRET + \
           "&js_code=" + code + "&grant_type=authorization_code"
     res = requests.get(url)
@@ -18,6 +23,8 @@ def get_openid(code):
 
 
 class UserAPI(APIView):
+    """用户信息接口
+    """
 
     @validate_serializer(UserCreateOrLoginSerializer)
     def post(self, request):
@@ -67,6 +74,9 @@ class UserAPI(APIView):
 
 
 class UserLoginAPI(APIView):
+    """登录接口，主要为了开发时测试方便
+    """
+
     @validate_serializer(UserLoginSerializer)
     def post(self, request):
         """
@@ -82,6 +92,9 @@ class UserLoginAPI(APIView):
 
 
 class UserLogoutAPI(APIView):
+    """登出接口
+    """
+
     @login_required
     def get(self, request):
         auth.logout(request)

@@ -5,6 +5,8 @@ from history.serializers import HistoryUserSerializers
 
 
 class HistoryAPI(APIView):
+    """历史记录接口
+    """
 
     @login_required
     def get(self, request):

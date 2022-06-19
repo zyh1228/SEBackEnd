@@ -61,7 +61,7 @@ class JSONResponse:
 
 class APIView(View):
     """
-    Django view的父类, 和django-rest-framework的用法基本一致
+    Django View的子类, 和django-rest-framework的用法基本一致
      - request.data获取解析之后的json或者urlencoded数据, dict类型
      - self.success, self.error和self.invalid_serializer可以根据业需求修改,
         写到父类中是为了不同的人开发写法统一,不再使用自己的success/error格式
@@ -82,7 +82,7 @@ class APIView(View):
                     break
             # else means the for loop is not interrupted by break
             else:
-                raise ValueError("unknown content_type '%s'" % content_type)
+                raise ValueError(f"unknown content_type {content_type}")
             if body:
                 return parser.parse(request)
             return {}
