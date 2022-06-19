@@ -4,7 +4,7 @@ from utils.api.api import JSONResponse, APIError
 from objModel.models import Category, ObjModel
 
 
-class BasePermissionDecorator(object):
+class BasePermissionDecorator:
     def __init__(self, func):
         self.func = func
 

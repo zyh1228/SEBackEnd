@@ -13,6 +13,6 @@ class SessionRecordMiddleware(MiddlewareMixin):
             session["user_agent"] = request.META.get("HTTP_USER_AGENT", "")
             session["ip"] = request.ip
             session["last_activity"] = datetime2str(now())
-            print(session)
+
             request.user.session_key = session.session_key
             request.user.save()

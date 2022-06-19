@@ -25,8 +25,6 @@ class CategoryAPI(APIView):
         """
         name = request.data.get('category_name')
         user = request.user
-        if not user.is_superuser:
-            return self.error('permission deny')
 
         if Category.objects.filter(category_name=name).exists():
             return self.error(f'{name} is already exits')
