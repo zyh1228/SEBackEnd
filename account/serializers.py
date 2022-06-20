@@ -6,7 +6,7 @@ from account.models import User
 class UserCreateOrLoginSerializer(serializers.Serializer):
     code = serializers.CharField()
     nick_name = serializers.CharField(max_length=1024)
-    avatar_url = serializers.CharField()
+    avatar_url = serializers.CharField(allow_null=True, allow_blank=True)
 
 
 class UserLoginSerializer(serializers.Serializer):
