@@ -175,8 +175,14 @@ class ObjModelAPI(APIView):
                 obj_model = ObjModel.objects.get(id=model_id, visible=True)
             except ObjModel.DoesNotExist:
                 return self.error('Model does not exist')
-            if not History.objects.filter(created_by=request.user, obj_model=obj_model).exists():
+
+            try:
+                history = History.objects.get(created_by=request.user, obj_model=obj_model)
+                history.view_count += 1
+                history.save()
+            except History.DoesNotExist:
                 History.objects.create(created_by=request.user, obj_model=obj_model)
+
             return self.success(ObjModelSerializer(obj_model).data)
 
         obj_model = ObjModel.objects.filter(visible=True)

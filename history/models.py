@@ -6,7 +6,8 @@ from objModel.models import ObjModel
 class History(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     obj_model = models.ForeignKey(ObjModel, on_delete=models.CASCADE)
-    view_time = models.TimeField(auto_now_add=True)
+    view_time = models.DateTimeField(auto_now=True)
+    view_count = models.IntegerField(default=1)
 
     class Meta:
         db_table = 'history'
