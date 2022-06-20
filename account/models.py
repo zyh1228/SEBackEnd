@@ -63,6 +63,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
+    def __str__(self):
+        return self.nick_name+'(' + self.get_username() + ')'
+
     class Meta:
         db_table = "user"
         verbose_name = '用户'

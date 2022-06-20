@@ -50,6 +50,9 @@ class ObjModel(models.Model):
     def get_cover_dir(self):
         return path.join(OBJ_COVER_DIR, self.file_dir_id)
 
+    def __str__(self):
+        return self.name + '(' + str(self.id) + ')'
+
     class Meta:
         db_table = 'obj_model'
         verbose_name = '模型'
