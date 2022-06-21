@@ -29,6 +29,10 @@ class CreateOrEditObjModelForm(forms.Form):
     description = forms.CharField(max_length=1024)
     category = forms.CharField(max_length=32)
     cover = forms.ImageField()
+
+
+class UploadObjModelForm(forms.Form):
+    id = forms.IntegerField()
     model = forms.FileField()
 
 

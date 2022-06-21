@@ -6,7 +6,7 @@ from utils.api.api import APIView, validate_serializer, APIError
 from utils.shortcuts import rand_str
 from account.decorators import login_required, admin_required, ensure_created_by
 from objModel.serializers import CreateCategorySerializer, EditCategorySerializer, CategorySerializer
-from objModel.serializers import CreateObjModelForm, EditObjModelForm, ObjModelSerializer, ObjModelListSerializer
+from objModel.serializers import CreateObjModelForm, UploadObjModelForm, EditObjModelForm, ObjModelSerializer, ObjModelListSerializer
 from objModel.models import Category, ObjModel
 from history.models import History
 
@@ -104,16 +104,6 @@ class ObjModelAPI(APIView):
 
         return suffix
 
-    def _check_model(self, model):
-        if model.size > 1024 * 1024 * 1024:
-            raise APIError("Model is too large")
-
-        suffix = path.splitext(model.name)[-1].lower()
-        if suffix not in [".obj", ".glb", ".gltf"]:
-            raise APIError("Unsupported model format")
-
-        return suffix
-
     @login_required
     def post(self, request):
         """添加模型
@@ -127,12 +117,10 @@ class ObjModelAPI(APIView):
             description = form.cleaned_data["description"]
             category_name = form.cleaned_data["category"]
             cover = form.cleaned_data["cover"]
-            model = form.cleaned_data["model"]
         else:
-            return self.error("Upload failed")
+            return self.error(form.errors)
 
         image_type = self._check_img(cover)
-        file_type = self._check_model(model)
 
         try:
             category = Category.objects.get(category_name=category_name)
@@ -140,7 +128,6 @@ class ObjModelAPI(APIView):
             return self.error('Category does not exist')
 
         cover.name = rand_str(length=16) + image_type
-        model.name = rand_str(length=16) + file_type
 
         obj_model = ObjModel()
         obj_model.file_dir_id = rand_str()
@@ -149,11 +136,9 @@ class ObjModelAPI(APIView):
         obj_model.category = category
         obj_model.created_by = request.user
         obj_model.cover = cover
-        obj_model.model_file = model
-        obj_model.file_type = file_type.upper()
         obj_model.save()
 
-        return self.success()
+        return self.success(ObjModelSerializer(obj_model).data)
 
     def get(self, request):
         """查询模型
@@ -281,5 +266,48 @@ class ObjModelAPI(APIView):
             shutil.rmtree(cover_dir, ignore_errors=True)
 
         obj_model.delete()
+
+        return self.success()
+
+
+class UploadObjModelAPI(APIView):
+
+    def _check_model(self, model):
+        if model.size > 1024 * 1024 * 1024:
+            raise APIError("Model is too large")
+
+        suffix = path.splitext(model.name)[-1].lower()
+        if suffix not in [".obj", ".glb", ".gltf"]:
+            raise APIError("Unsupported model format")
+
+        return suffix
+
+    @login_required
+    def post(self, request):
+        """添加模型
+
+        :param request: 请求
+        :return:
+        """
+
+        form = UploadObjModelForm(request.data, request.file)
+        if form.is_valid():
+            model_id = form.cleaned_data["id"]
+            model = form.cleaned_data["model"]
+        else:
+            return self.error(form.errors)
+
+        file_type = self._check_model(model)
+        model.name = rand_str(length=16) + file_type
+
+        try:
+            obj_model = ObjModel.objects.get(id=model_id)
+            ensure_created_by(obj_model, request.user)
+        except ObjModel.DoesNotExist:
+            return self.error("Model does not exist")
+
+        obj_model.model_file = model
+        obj_model.file_type = file_type.upper()
+        obj_model.save()
 
         return self.success()
