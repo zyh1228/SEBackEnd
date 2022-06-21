@@ -1,0 +1,10 @@
+venv
+.idea
+.git
+.DS_Store
+.vs
+.vscode
+__pycache__/
+
+*.sqlite3
+data/
